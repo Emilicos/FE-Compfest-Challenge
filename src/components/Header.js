@@ -7,12 +7,12 @@ import PersonIcon from '@mui/icons-material/Person';
 const Header = () => {
   const navigate = useNavigate()
   const [menu, setMenu] = useState(false)
-  const [isAuthenticated, setIsAuthenticated] = useState(false)
+  const [isAuthenticated, setIsAuthenticated] = useState(localStorage.getItem("isAuthenticated") || "false")
 
   const auth = useContext(AuthContext)
 
   useEffect(() => {
-    setIsAuthenticated(localStorage.getItem("isAuthenticated") || false)
+    setIsAuthenticated(localStorage.getItem("isAuthenticated") || "false")
   }, [isAuthenticated, auth.isAuthenticated]);
 
   useEffect(() => {
@@ -36,11 +36,11 @@ const Header = () => {
           <li onClick = {() => setMenu(false)} className = "mx-8 cursor-pointer">
               <Link to="/"> Home </Link>
           </li>
-          <li className = "mx-8 cursor-pointer hidden md:block">
+          {isAuthenticated === "true" && <li className = "mx-8 cursor-pointer hidden md:block">
               <Link to="/add"> Add Product </Link>
-          </li>
+          </li>}
         </ul>
-        {isAuthenticated === false || isAuthenticated === null ? 
+        {isAuthenticated === "false" || isAuthenticated === null ? 
           <ul className = "flex items-center">
             <button className = "hidden md:block cursor-pointer text-black py-2 px-8 mx-4 bg-lime-400 rounded-md hover:bg-lime-300 duration-1000">
                 <Link to="/register"> Register </Link>
@@ -56,7 +56,7 @@ const Header = () => {
               <PersonIcon />
               <li className = "mr-8 ml-4 capitalize"> {localStorage.getItem("name") || ""} </li>
             </div>
-            <button onClick = {logout} className = "cursor-pointer hidden md:block py-2 px-8 mx-4 bg-red-600 rounded-md hover:bg-red-500 duration-1000">
+            <button onClick = {() => logout()} className = "cursor-pointer hidden md:block py-2 px-8 mx-4 bg-red-600 rounded-md hover:bg-red-500 duration-1000">
               Logout
             </button>
           </ul>

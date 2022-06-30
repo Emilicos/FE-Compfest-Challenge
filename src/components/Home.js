@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react'
+import React, { useState, useEffect, useContext } from 'react'
 import Axios from 'axios'
 import Product from './Product'
 import { useSelector, useDispatch } from 'react-redux'
@@ -7,10 +7,10 @@ import { Button, Select, useToast, useDisclosure } from '@chakra-ui/react'
 import { ArrowForwardIcon, ArrowBackIcon, AddIcon, ViewIcon } from '@chakra-ui/icons'
 import { Link, } from "react-router-dom";
 import ModalView from './Modal'
+import { AuthContext } from '../context/GlobalAuthContext';
 
 const Home = () => {
   const [reverseProduct, setReverseProduct] = useState([])
-
   const {products, } = useSelector(state => state)
   const dispatch = useDispatch()
   const [page, setPage] = useState(1)
@@ -21,10 +21,12 @@ const Home = () => {
   const [totalData, setTotalData] = useState(0)
   const [ascending, setAscending] = useState("ascend")
   const [balance, setBalance] = useState(0)
-  
-  var tempMoney;
-  const toast = useToast()
+  const [statusAuthenticated, setStatusAuthenticated] = useState(localStorage.getItem("isAuthenticated") || "false")
   const { isOpen, onOpen, onClose } = useDisclosure()
+
+  var tempMoney;
+  const auth = useContext(AuthContext)
+  const toast = useToast()
 
   const showToast = (title, error, status) => {
     toast({
@@ -89,6 +91,10 @@ const Home = () => {
   }
 
   useEffect(() => {
+    setStatusAuthenticated(localStorage.getItem("isAuthenticated") || "false")
+  }, [statusAuthenticated, auth.isAuthenticated]);
+
+  useEffect(() => {
     Axios.get(`http://localhost:4000/v1/balance/`)
     .then((result) => {
       const response = result.data
@@ -146,7 +152,7 @@ const Home = () => {
   return (
     <div className = "mt-24 flex items-center flex-col">
       <h1 className = "text-5xl font-bold text-white text-center"> Canteen Kejujuran </h1>
-      <div className = "flex flex-col bg-gray-800 px-12 py-4 mt-8 mx-4 rounded-2xl hover:scale-95 hover:opacity-100 opacity-80 duration-500">
+      {statusAuthenticated === "true" && <div className = "flex flex-col bg-gray-800 px-12 py-4 mt-8 mx-4 rounded-2xl hover:scale-95 hover:opacity-100 opacity-80 duration-500">
         <h1 className = "text-2xl font-bold text-white my-4"> Canteen Balance: Rp {balance},00 </h1>
         <>
         <Button className = "w-full mb-4"
@@ -159,10 +165,11 @@ const Home = () => {
                   _hover={{ boxShadow: '0 0 1px 2px rgba(88, 144, 255, .75)' }} 
                   _active={{bg: '#22c55e', transform: 'scale(1.03)', borderColor: '#bec3c9',}}
                   onClick = {onOpen}
+                  disabled = {statusAuthenticated === "true" ? false : true}
         > View Balance Options! </Button>
         <ModalView withdrawMoney = {withdrawMoney} addMoney = {addMoney} isOpen = {isOpen} onClose = {onClose}/>
         </>
-      </div>
+      </div>}
       <div className='text-right mt-8'>
         <Select defaultValue = "sort" onChange = {handleSelectChange} bg = "#22c55e" borderColor= "#22c55e" borderRadius="10px"
             className = "max-w-xs text-black font-bold text-center">
@@ -175,7 +182,7 @@ const Home = () => {
         {products.map(product => {
             return <Product name = {product.name} price = {product.price} desc = {product.desc} 
               image = {`http://localhost:4000/${product.image}`} key = {product._id} id = {product._id} time = {product.createdAt}
-              handleBuyItem = {() => handleBuyItem(product._id)}/>
+              handleBuyItem = {() => handleBuyItem(product._id)} disabled = {statusAuthenticated === "true" ? false : true}/>
         })}
       </div>}
         
@@ -183,7 +190,7 @@ const Home = () => {
         {reverseProduct.map(product => {
             return <Product name = {product.name} price = {product.price} desc = {product.desc} 
               image = {`http://localhost:4000/${product.image}`} key = {product._id} id = {product._id} time = {product.createdAt}
-              handleBuyItem = {() => handleBuyItem(product._id)}/>
+              handleBuyItem = {() => handleBuyItem(product._id)} disabled = {statusAuthenticated === "true" ? false : true}/>
         })}
       </div>}
 
@@ -232,6 +239,7 @@ const Home = () => {
                   borderRadius='6px' 
                   _hover={{ boxShadow: '0 0 1px 2px rgba(88, 144, 255, .75)' }} 
                   _active={{bg: '#22c55e', transform: 'scale(1.03)', borderColor: '#bec3c9',}}
+                  disabled = {statusAuthenticated === "true" ? false : true}
                 > Add Products! </Button>
               </Link>
           </div>

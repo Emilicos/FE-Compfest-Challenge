@@ -10,11 +10,11 @@ const Login = () => {
   const [pass, setPass] = useState("")
   const toast = useToast()
   const auth = useContext(AuthContext)
-  const [statusAuthenticated, setStatusAuthenticated] = useState(false)
+  const [statusAuthenticated, setStatusAuthenticated] = useState(localStorage.getItem("isAuthenticated") || "false")
 
   useEffect(() => {
-    setStatusAuthenticated(localStorage.getItem("isAuthenticated") || false)
-    if(localStorage.getItem("isAuthenticated") || false){
+    setStatusAuthenticated(localStorage.getItem("isAuthenticated") || "false")
+    if((localStorage.getItem("isAuthenticated") || "false") === "true"){
         navigate("/")
     }
   }, [navigate])
@@ -88,7 +88,7 @@ const Login = () => {
 
   return (
     <>
-    {statusAuthenticated === false && 
+    {statusAuthenticated === "false" && 
         <div className = "flex flex-col">
             <h1 className = "mt-24 text-center font-bold text-white text-4xl mb-8"> Login </h1>
             

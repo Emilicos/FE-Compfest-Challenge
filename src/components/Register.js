@@ -12,11 +12,11 @@ const Register = () => {
   const [confirmPass, setConfirmPass] = useState("")
   const [name, setName] = useState("")
   const toast = useToast()
-  const [statusAuthenticated, setStatusAuthenticated] = useState(false)
+  const [statusAuthenticated, setStatusAuthenticated] = useState("false")
 
   useEffect(() => {
-    setStatusAuthenticated(localStorage.getItem("isAuthenticated") || false)
-    if(localStorage.getItem("isAuthenticated") || false){
+    setStatusAuthenticated(localStorage.getItem("isAuthenticated") || "false")
+    if((localStorage.getItem("isAuthenticated") || "false") === "true"){
         navigate("/")
     }
   }, [navigate])
@@ -93,7 +93,7 @@ const Register = () => {
 
   return (
     <>
-        {statusAuthenticated === false && <div className = "flex flex-col">
+        {statusAuthenticated === "false" && <div className = "flex flex-col">
             <h1 className = "mt-24 text-center font-bold text-white text-4xl mb-8"> Register </h1>
             
             <form onSubmit = {handleSubmit} className = "flex flex-col m-auto form px-16 rounded-md min-w-full md:min-w-min md:w-1/2">

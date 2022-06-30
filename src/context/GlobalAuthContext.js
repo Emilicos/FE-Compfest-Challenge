@@ -9,7 +9,9 @@ export const AuthContext = createContext({
 })
 
 const AuthWrapper = ( {children} ) =>{
-    const [isAuthenticated, setIsAuthenticated] = useState(false)
+    const [isAuthenticated, setIsAuthenticated] = useState(
+         (localStorage.getItem("isAuthenticated") || "false") === "true" ? true: false )
+         
     const [name, setName] = useState(null)
     const [token, setToken] = useState(null)
 

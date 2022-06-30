@@ -54,6 +54,7 @@ const Product = (props) => {
           _hover={{ boxShadow: '0 0 2px 2px #e1e1e1' }} 
           _active={{bg: '#22c55e', transform: 'scale(1.03)',}}
           onClick = {props.handleBuyItem}
+          disabled = {props.disabled}
           > 
           Buy Item 
         </Button>
