@@ -1,0 +1,27 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+body{
+    background-color: #141316;
+}
+
+.form{
+    box-shadow: 12px 12px 12px 12px rgba(0, 0, 0, 0.2);
+}
+
+.wrapper {
+    grid-template-columns: repeat(auto-fit, minmax(16rem, 20rem));
+    gap: 2rem;
+}
+    
+.btn {
+    font-family: inherit;
+    background: transparent;
+    transition: background 200ms ease-in, color 200ms ease-in;
+  }
+
+.card:hover .btn {
+      background: #e1e1e1;
+      color: black;
+}
