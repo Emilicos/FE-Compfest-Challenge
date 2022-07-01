@@ -1,6 +1,18 @@
 # Getting Started with Create React App
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app). You can start by downloading or cloning this reporsitory
+
+Downloading this reporsitory could be made happened by: 
+1. Clicking on the green button "Code" 
+2. Download ZIP File
+3. You can unzip the folder afterwards
+4. You can start the react application by using the method below!
+
+PS. If npm start didn`t work on the terminal, you can do 
+
+### `npm install`
+
+It will install all the necessary packages.
 
 ## Available Scripts
 
